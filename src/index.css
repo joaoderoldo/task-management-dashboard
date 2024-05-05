@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.trash-red:hover {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(98%) saturate(5572%)
+    hue-rotate(339deg) brightness(102%) contrast(88%);
+}

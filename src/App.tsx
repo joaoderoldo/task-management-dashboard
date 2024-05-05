@@ -1,8 +1,14 @@
+import { TaskProvider } from '@/contexts'
+import { TaskList } from '@/components'
+import { DefaultLayout } from '@/layouts'
+
 function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <DefaultLayout>
+      <TaskProvider>
+        <TaskList />
+      </TaskProvider>
+    </DefaultLayout>
   )
 }
 
