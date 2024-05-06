@@ -4,8 +4,14 @@ import { FaAngleRight, FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa'
 
 import { useTask } from '@/contexts'
 import { TASK_STATUS, TASK_STATUS_VARIANTS } from '@/constants/tasks'
+import { TaskProps, UseTaskProps } from '@/types/tasks'
 
-const CardModal = ({ isOpen, children }) => {
+interface CardModalProps {
+  isOpen: boolean
+  children: React.ReactNode
+}
+
+const CardModal = ({ isOpen, children }: CardModalProps) => {
   return (
     <div
       className={twMerge(
@@ -18,16 +24,21 @@ const CardModal = ({ isOpen, children }) => {
   )
 }
 
-const TaskItem = ({ task, setSelectedTask }) => {
+interface TaskItemProps {
+  task: TaskProps
+  setSelectedTask: (taskId: string) => void
+}
+
+const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { removeTask, updateStatus, moveStatus } = useTask()
+  const { removeTask, updateStatus } = useTask() as UseTaskProps
 
   const handleRemove = () => {
     removeTask(task.id)
   }
 
-  const handleUpdateStatus = (taskId, status) => {
+  const handleUpdateStatus = (taskId: string, status: string) => {
     updateStatus({ taskId, newStatus: status })
 
     if (isUpdating) {
@@ -35,7 +46,7 @@ const TaskItem = ({ task, setSelectedTask }) => {
     }
   }
 
-  const handleMoveStatus = (taskId, currentStatus) => {
+  const handleMoveStatus = (taskId: string, currentStatus: string) => {
     updateStatus({ taskId, currentStatus })
   }
 
@@ -57,7 +68,7 @@ const TaskItem = ({ task, setSelectedTask }) => {
           </button>
           {task.status !== 'completed' && (
             <button
-              className="w-6 text-center"
+              className="w-6 cursor-cell text-center"
               onClick={() => handleMoveStatus(task.id, task.status)}
               disabled={task.status === 'completed'}
             >

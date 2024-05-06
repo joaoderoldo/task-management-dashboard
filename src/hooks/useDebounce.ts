@@ -1,7 +1,8 @@
 import { useRef, useEffect } from 'react'
 
 type Timer = ReturnType<typeof setTimeout>
-type SomeFunction = (...args: unknown[]) => void
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SomeFunction = (...args: any[]) => void
 
 export function useDebounce<Func extends SomeFunction>(
   func: Func,

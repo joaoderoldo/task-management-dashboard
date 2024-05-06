@@ -6,35 +6,51 @@ import { Modal } from '@/components/Modal'
 import { useTask } from '@/contexts'
 import { useDebounce } from '@/hooks'
 import { TASK_STATUS } from '@/constants/tasks'
+import { TaskProps, UseTaskProps } from '@/types/tasks'
 
-const FilterBar = ({ onFilterChange, selectedTask, setSelectedTask }) => {
+import {
+  FilterBarProps,
+  TaskModalErrorProps,
+} from '@/components/FilterBar/types'
+
+const FilterBar = ({
+  onFilterChange,
+  selectedTask,
+  setSelectedTask,
+}: FilterBarProps) => {
   const [titleFilter, setTitleFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [statusFilterOpen, setStatusFilterOpen] = useState(false)
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false)
   const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] = useState(false)
-  const [createTaskModalErrors, setCreateTaskModalErrors] = useState({})
-  const [updateTaskModalErrors, setUpdateTaskModalErrors] = useState({})
-  const { tasks, addTask, updateTask } = useTask()
+  const [createTaskModalErrors, setCreateTaskModalErrors] =
+    useState<TaskModalErrorProps>({})
+  const [updateTaskModalErrors, setUpdateTaskModalErrors] =
+    useState<TaskModalErrorProps>({})
+  const { tasks, addTask, updateTask } = useTask() as UseTaskProps
 
-  const handleTitleFilterChangeDebounced = useDebounce(value => {
+  const handleTitleFilterChangeDebounced = useDebounce((value: string) => {
     onFilterChange({ title: value, status: statusFilter })
   }, 300)
 
-  const handleTitleFilterChange = e => {
-    setTitleFilter(e.target.value)
-    handleTitleFilterChangeDebounced(e.target.value)
+  const handleTitleFilterChange = (e: FormEvent<HTMLInputElement>) => {
+    setTitleFilter((e.target as HTMLInputElement).value)
+    handleTitleFilterChangeDebounced((e.target as HTMLInputElement).value)
   }
 
-  const handleStatusFilterChange = status => {
+  const handleStatusFilterChange = (status: string) => {
     setStatusFilter(status)
     setStatusFilterOpen(false)
     onFilterChange({ title: titleFilter, status })
   }
 
+  const resetForm = (form: HTMLFormElement) => {
+    form.reset()
+  }
+
   const handleCreateTask = (e: FormEvent) => {
     e.preventDefault()
-    const data = new FormData(e.target)
+    const data = new FormData(e.target as HTMLFormElement)
     const formObject = Object.fromEntries(data.entries())
 
     if (!formObject.title) {
@@ -44,18 +60,18 @@ const FilterBar = ({ onFilterChange, selectedTask, setSelectedTask }) => {
 
     addTask({
       id: crypto.randomUUID(),
-      title: formObject.title,
-      description: formObject.description,
-      status: formObject.status || 'pending',
+      title: formObject.title.toString(),
+      description: formObject.description.toString(),
+      status: formObject.status.toString() || 'pending',
     })
     setIsCreateTaskModalOpen(false)
     setCreateTaskModalErrors({})
-    e.target.reset()
+    resetForm(e.target as HTMLFormElement)
   }
 
   const handleUpdateTask = (e: FormEvent) => {
     e.preventDefault()
-    const data = new FormData(e.target)
+    const data = new FormData(e.target as HTMLFormElement)
     const formObject = Object.fromEntries(data.entries())
 
     if (!formObject.title) {
@@ -63,15 +79,15 @@ const FilterBar = ({ onFilterChange, selectedTask, setSelectedTask }) => {
       return
     }
 
-    updateTask(selectedTask, {
-      title: formObject.title,
-      description: formObject.description,
+    updateTask(selectedTask ?? '', {
+      title: formObject.title.toString(),
+      description: formObject.description.toString(),
     })
 
     setIsUpdateTaskModalOpen(false)
     setUpdateTaskModalErrors({})
     setSelectedTask(null)
-    e.target.reset()
+    resetForm(e.target as HTMLFormElement)
   }
 
   const handleCloseUpdateTaskModal = () => {
@@ -297,7 +313,9 @@ const FilterBar = ({ onFilterChange, selectedTask, setSelectedTask }) => {
                 name="title"
                 id="title"
                 defaultValue={
-                  tasks.find(task => task.id === selectedTask)?.title || ''
+                  (tasks as TaskProps[]).find(
+                    (task: { id: string | null }) => task.id === selectedTask,
+                  )?.title || ''
                 }
                 required
                 className={twMerge(
@@ -323,8 +341,9 @@ const FilterBar = ({ onFilterChange, selectedTask, setSelectedTask }) => {
                 name="description"
                 rows={4}
                 defaultValue={
-                  tasks.find(task => task.id === selectedTask)?.description ||
-                  ''
+                  (tasks as TaskProps[]).find(
+                    (task: { id: string | null }) => task.id === selectedTask,
+                  )?.description || ''
                 }
                 className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm outline-none ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
               ></textarea>

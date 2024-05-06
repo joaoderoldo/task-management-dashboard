@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge'
-
 import { MdClose } from 'react-icons/md'
+
+import { ModalProps } from '@/components/Modal/types'
 
 const Modal = ({
   isOpen,
@@ -8,7 +9,7 @@ const Modal = ({
   title = 'Tasker',
   children,
   childrenClassName,
-}) => {
+}: ModalProps) => {
   return (
     <div
       className={twMerge(

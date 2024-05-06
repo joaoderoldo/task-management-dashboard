@@ -1,32 +1,44 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
-const TaskContext = createContext()
+import { UseTaskProps, TaskProps } from '@/types/tasks'
+
+const TaskContext = createContext<UseTaskProps | undefined>(undefined)
 
 const localStorageKey = import.meta.env.VITE_LOCAL_STORAGE_KEY || 'tasks'
 
-const initialTasks = []
+interface TaskProviderProps {
+  children: React.ReactNode
+}
 
-const TaskProvider = ({ children }) => {
+interface UpdateStatusProps {
+  taskId: string
+  currentStatus?: string
+  newStatus?: string | null
+}
+
+const TaskProvider = ({ children }: TaskProviderProps) => {
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem(localStorageKey)
-    return savedTasks ? JSON.parse(savedTasks) : initialTasks
+    return savedTasks ? JSON.parse(savedTasks) : []
   })
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(tasks))
   }, [tasks])
 
-  const addTask = task => {
-    setTasks(prevTasks => [...prevTasks, task])
+  const addTask = (task: TaskProps) => {
+    setTasks((prevTasks: TaskProps[]) => [...prevTasks, task])
   }
 
-  const removeTask = taskId => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId))
+  const removeTask = (taskId: string) => {
+    setTasks((prevTasks: TaskProps[]) =>
+      prevTasks.filter(task => task.id !== taskId),
+    )
   }
 
-  const updateTask = (taskId, updatedTask) => {
-    setTasks(prevTasks => {
-      return prevTasks.map(task => {
+  const updateTask = (taskId: string, updatedTask: Partial<TaskProps>) => {
+    setTasks((prevTasks: TaskProps[]) => {
+      return prevTasks.map((task: TaskProps) => {
         if (task.id === taskId) {
           return {
             ...task,
@@ -39,7 +51,11 @@ const TaskProvider = ({ children }) => {
     })
   }
 
-  const updateStatus = ({ taskId, currentStatus, newStatus = null }) => {
+  const updateStatus = ({
+    taskId,
+    currentStatus,
+    newStatus = null,
+  }: UpdateStatusProps) => {
     let updatedStatus = newStatus ? newStatus : ''
 
     if (!newStatus) {
@@ -50,7 +66,7 @@ const TaskProvider = ({ children }) => {
       }
     }
 
-    setTasks(prevTasks =>
+    setTasks((prevTasks: TaskProps[]) =>
       prevTasks.map(task =>
         task.id === taskId ? { ...task, status: updatedStatus } : task,
       ),

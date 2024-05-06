@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, SetStateAction } from 'react'
 
 import { useTask } from '@/contexts'
 import { TaskItem, FilterBar } from '@/components'
+import { TaskProps, UseTaskProps } from '@/types/tasks'
+
+interface HandleFilterChangeProps {
+  title: string
+  status: string
+}
 
 const TaskList = () => {
-  const { tasks } = useTask()
+  const { tasks } = useTask() as UseTaskProps
   const [filteredTasks, setFilteredTasks] = useState(tasks)
   const [selectedTask, setSelectedTask] = useState(null)
 
@@ -12,15 +18,17 @@ const TaskList = () => {
     setFilteredTasks(tasks)
   }, [tasks])
 
-  const handleFilterChange = ({ title, status }) => {
+  const handleFilterChange = ({ title, status }: HandleFilterChangeProps) => {
     let filtered = tasks
     if (title) {
-      filtered = filtered.filter(task =>
+      filtered = (filtered as TaskProps[]).filter(task =>
         task.title.toLowerCase().includes(title.toLowerCase()),
       )
     }
     if (status && status !== 'all') {
-      filtered = filtered.filter(task => task.status === status)
+      filtered = (filtered as TaskProps[]).filter(
+        task => task.status === status,
+      )
     }
     setFilteredTasks(filtered)
   }
@@ -30,10 +38,12 @@ const TaskList = () => {
       <FilterBar
         onFilterChange={handleFilterChange}
         selectedTask={selectedTask}
-        setSelectedTask={setSelectedTask}
+        setSelectedTask={(taskId: string | null) =>
+          setSelectedTask(taskId as SetStateAction<null>)
+        }
       />
       <div className="min-h-[calc(100vh-75px)] bg-[#F7F7F7] p-8">
-        {filteredTasks.length === 0 && (
+        {(filteredTasks as TaskProps[]).length === 0 && (
           <div className="flex h-[calc(100vh-150px)] items-center justify-center">
             <h2 className="text-center text-xl font-semibold">
               No tasks found
@@ -41,11 +51,13 @@ const TaskList = () => {
           </div>
         )}
         <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
-          {filteredTasks.map(task => (
+          {(filteredTasks as TaskProps[]).map(task => (
             <TaskItem
               key={task.id}
               task={task}
-              setSelectedTask={setSelectedTask}
+              setSelectedTask={(taskId: string | null) =>
+                setSelectedTask(taskId as SetStateAction<null>)
+              }
             />
           ))}
         </div>

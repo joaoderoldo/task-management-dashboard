@@ -1,6 +1,10 @@
 import { ReactComponent as Logo } from '@/assets/img/logo.svg'
 
-const DefaultLayout = ({ children }) => {
+interface DefaultLayoutProps {
+  children: React.ReactNode
+}
+
+const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <main className="flex min-h-screen">
       <aside className="min-h-full w-64 shrink-0 border-r border-r-secondary bg-white p-8">
