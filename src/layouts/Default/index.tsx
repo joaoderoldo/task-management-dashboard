@@ -1,8 +1,6 @@
 import { ReactComponent as Logo } from '@/assets/img/logo.svg'
 
-interface DefaultLayoutProps {
-  children: React.ReactNode
-}
+import { DefaultLayoutProps } from '@/layouts/Default/types'
 
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (

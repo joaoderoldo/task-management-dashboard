@@ -4,10 +4,7 @@ import { useTask } from '@/contexts'
 import { TaskItem, FilterBar } from '@/components'
 import { TaskProps, UseTaskProps } from '@/types/tasks'
 
-interface HandleFilterChangeProps {
-  title: string
-  status: string
-}
+import { HandleFilterChangeProps } from '@/components/TaskList/types'
 
 const TaskList = () => {
   const { tasks } = useTask() as UseTaskProps

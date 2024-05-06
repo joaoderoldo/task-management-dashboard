@@ -4,30 +4,10 @@ import { FaAngleRight, FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa'
 
 import { useTask } from '@/contexts'
 import { TASK_STATUS, TASK_STATUS_VARIANTS } from '@/constants/tasks'
-import { TaskProps, UseTaskProps } from '@/types/tasks'
+import { UseTaskProps } from '@/types/tasks'
 
-interface CardModalProps {
-  isOpen: boolean
-  children: React.ReactNode
-}
-
-const CardModal = ({ isOpen, children }: CardModalProps) => {
-  return (
-    <div
-      className={twMerge(
-        'absolute inset-0 flex h-full w-full flex-col rounded bg-white p-4 transition-opacity',
-        isOpen ? 'visible opacity-100' : 'invisible opacity-0',
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-interface TaskItemProps {
-  task: TaskProps
-  setSelectedTask: (taskId: string) => void
-}
+import { TaskItemProps } from '@/components/TaskItem/types'
+import { CardModal } from '@/components/TaskItem/components'
 
 const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false)

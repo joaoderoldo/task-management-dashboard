@@ -2,19 +2,14 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 import { UseTaskProps, TaskProps } from '@/types/tasks'
 
+import {
+  TaskProviderProps,
+  UpdateStatusProps,
+} from '@/contexts/TaskContext/types'
+
 const TaskContext = createContext<UseTaskProps | undefined>(undefined)
 
 const localStorageKey = import.meta.env.VITE_LOCAL_STORAGE_KEY || 'tasks'
-
-interface TaskProviderProps {
-  children: React.ReactNode
-}
-
-interface UpdateStatusProps {
-  taskId: string
-  currentStatus?: string
-  newStatus?: string | null
-}
 
 const TaskProvider = ({ children }: TaskProviderProps) => {
   const [tasks, setTasks] = useState(() => {
