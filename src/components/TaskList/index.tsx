@@ -47,7 +47,7 @@ const TaskList = () => {
             </h2>
           </div>
         )}
-        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6">
           {(filteredTasks as TaskProps[]).map(task => (
             <TaskItem
               key={task.id}

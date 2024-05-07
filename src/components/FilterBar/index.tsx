@@ -103,18 +103,18 @@ const FilterBar = ({
 
   return (
     <>
-      <section className="flex gap-4 border-b border-b-secondary bg-white px-8 py-4">
-        <div className="flex items-center rounded bg-[#F7F7F7] pl-4">
-          <FaSearch className="text-gray-400" />
+      <section className="flex flex-col gap-4 border-b border-b-secondary bg-white px-4 py-8 md:flex-row md:px-8">
+        <div className="flex items-center rounded bg-[#F7F7F7] pl-2 md:pl-4">
+          <FaSearch className="hidden shrink-0 text-gray-400 md:block" />
           <input
             type="text"
             placeholder="Search by task title"
-            className="h-10 bg-transparent px-4 outline-none placeholder:text-gray-400"
+            className="h-10 bg-transparent px-2 outline-none placeholder:text-gray-400 md:px-4"
             value={titleFilter}
             onChange={handleTitleFilterChange}
           />
         </div>
-        <div className="relative w-52">
+        <div className="relative md:grow lg:w-52 lg:grow-0">
           <button
             className="flex w-full items-center justify-between rounded bg-[#F7F7F7] p-2 px-4 ring-1 ring-secondary"
             onClick={() => setStatusFilterOpen(prevState => !prevState)}
@@ -168,7 +168,7 @@ const FilterBar = ({
           </ul>
         </div>
         <button
-          className="ml-auto rounded border border-transparent bg-primary px-4 py-2 text-white transition-colors hover:border-primary hover:bg-white hover:text-primary"
+          className="mt-4 rounded border border-transparent bg-primary px-4 py-2 text-white transition-colors hover:border-primary hover:bg-white hover:text-primary md:ml-auto md:mt-0"
           onClick={() => setIsCreateTaskModalOpen(true)}
         >
           Add task
