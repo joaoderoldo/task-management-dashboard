@@ -10,15 +10,6 @@ describe('TaskItem component', () => {
     status: 'pending',
   }
 
-  vi.mock('@/contexts', () => ({
-    useTask: () => ({
-      tasks: [],
-      addTask: vi.fn(),
-      updateTask: vi.fn(),
-      removeTask: vi.fn(),
-    }),
-  }))
-
   it('renders task title and description correctly', () => {
     const { getByTestId } = render(
       <TaskItem task={mockTask} setSelectedTask={() => {}} />,

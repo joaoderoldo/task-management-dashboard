@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FaAngleRight, FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa'
 
-import { useTask } from '@/contexts'
+import { useTasksStore } from '@/stores'
 import { TASK_STATUS, TASK_STATUS_VARIANTS } from '@/constants/tasks'
-import { UseTaskProps } from '@/types/tasks'
 
 import { TaskItemProps } from '@/components/TaskItem/types'
 import { CardModal } from '@/components/TaskItem/components'
@@ -12,18 +11,19 @@ import { CardModal } from '@/components/TaskItem/components'
 const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { removeTask, updateStatus } = useTask() as UseTaskProps
+  const { deleteTask, updateStatus } = useTasksStore()
 
   const handleRemove = () => {
-    removeTask(task.id)
+    deleteTask(task.id)
   }
 
   const handleUpdateStatus = (taskId: string, status: string) => {
-    updateStatus({ taskId, newStatus: status })
-
-    if (isUpdating) {
-      setIsUpdating(false)
-    }
+    updateStatus({
+      taskId,
+      newStatus: status,
+      currentStatus: '',
+    })
+    setIsUpdating(false)
   }
 
   const handleMoveStatus = (taskId: string, currentStatus: string) => {

@@ -1,13 +1,13 @@
-import { TaskProvider } from '@/contexts'
 import { TaskList } from '@/components'
 import { DefaultLayout } from '@/layouts'
+import { useTasksStore } from '@/stores'
 
 function App() {
+  const tasks = useTasksStore(state => state.tasks)
+
   return (
     <DefaultLayout>
-      <TaskProvider>
-        <TaskList />
-      </TaskProvider>
+      <TaskList tasks={tasks} />
     </DefaultLayout>
   )
 }

@@ -3,15 +3,12 @@ import { twMerge } from 'tailwind-merge'
 import { FaAngleDown, FaSearch } from 'react-icons/fa'
 
 import { Modal } from '@/components/Modal'
-import { useTask } from '@/contexts'
+import { useTasksStore } from '@/stores'
 import { useDebounce } from '@/hooks'
 import { TASK_STATUS } from '@/constants/tasks'
-import { TaskProps, UseTaskProps } from '@/types/tasks'
+import { TaskProps } from '@/types/tasks'
 
-import {
-  FilterBarProps,
-  TaskModalErrorProps,
-} from '@/components/FilterBar/types'
+import { FilterBarProps, TaskModalErrorProps } from './types'
 
 const FilterBar = ({
   onFilterChange,
@@ -27,15 +24,15 @@ const FilterBar = ({
     useState<TaskModalErrorProps>({})
   const [updateTaskModalErrors, setUpdateTaskModalErrors] =
     useState<TaskModalErrorProps>({})
-  const { tasks, addTask, updateTask } = useTask() as UseTaskProps
+  const { tasks, addTask, updateTask } = useTasksStore()
 
   const handleTitleFilterChangeDebounced = useDebounce((value: string) => {
     onFilterChange({ title: value, status: statusFilter })
   }, 300)
 
   const handleTitleFilterChange = (e: FormEvent<HTMLInputElement>) => {
-    setTitleFilter((e.target as HTMLInputElement).value)
-    handleTitleFilterChangeDebounced((e.target as HTMLInputElement).value)
+    setTitleFilter(e.currentTarget.value)
+    handleTitleFilterChangeDebounced(e.currentTarget.value)
   }
 
   const handleStatusFilterChange = (status: string) => {
@@ -59,10 +56,10 @@ const FilterBar = ({
     }
 
     addTask({
-      id: crypto.randomUUID(),
+      id: Date.now().toString(),
       title: formObject.title.toString(),
-      description: formObject.description.toString(),
-      status: formObject.status.toString() || 'pending',
+      description: formObject.description?.toString() || '',
+      status: formObject.status?.toString() || 'pending',
     })
     setIsCreateTaskModalOpen(false)
     setCreateTaskModalErrors({})
@@ -79,9 +76,9 @@ const FilterBar = ({
       return
     }
 
-    updateTask(selectedTask ?? '', {
+    updateTask(selectedTask || '', {
       title: formObject.title.toString(),
-      description: formObject.description.toString(),
+      description: formObject.description?.toString() || '',
     })
 
     setIsUpdateTaskModalOpen(false)

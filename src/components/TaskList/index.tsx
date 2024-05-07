@@ -1,13 +1,12 @@
 import { useState, useEffect, SetStateAction } from 'react'
 
-import { useTask } from '@/contexts'
 import { TaskItem, FilterBar } from '@/components'
-import { TaskProps, UseTaskProps } from '@/types/tasks'
+import { TaskProps } from '@/types/tasks'
 
 import { HandleFilterChangeProps } from '@/components/TaskList/types'
 
-const TaskList = () => {
-  const { tasks } = useTask() as UseTaskProps
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const TaskList = ({ tasks }: { tasks: any }) => {
   const [filteredTasks, setFilteredTasks] = useState(tasks)
   const [selectedTask, setSelectedTask] = useState(null)
 

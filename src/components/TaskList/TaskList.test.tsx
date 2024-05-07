@@ -1,4 +1,4 @@
-import { vi, describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/react'
 import { TaskList } from '@/components/TaskList'
 
@@ -23,17 +23,9 @@ const mockTasks = [
   },
 ]
 
-vi.mock('@/contexts', () => ({
-  useTask: () => ({
-    tasks: mockTasks,
-    addTask: vi.fn(),
-    updateTask: vi.fn(),
-  }),
-}))
-
 describe('TaskList component', () => {
   it('renders tasks correctly', () => {
-    const { getByText } = render(<TaskList />)
+    const { getByText } = render(<TaskList tasks={mockTasks} />)
 
     mockTasks.forEach(task => {
       expect(getByText(task.description)).toBeInTheDocument()
@@ -41,7 +33,9 @@ describe('TaskList component', () => {
   })
 
   it('filters tasks by title', () => {
-    const { getByPlaceholderText, getByText } = render(<TaskList />)
+    const { getByPlaceholderText, getByText } = render(
+      <TaskList tasks={mockTasks} />,
+    )
 
     const input = getByPlaceholderText('Search by task title')
     fireEvent.change(input, { target: { value: 'Test Task' } })
