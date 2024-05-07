@@ -18,6 +18,8 @@ const Modal = ({
           ? 'visible opacity-100'
           : 'pointer-events-none invisible opacity-0',
       )}
+      aria-hidden={!isOpen}
+      data-testid="modal"
     >
       <div className="modal-overlay fixed inset-0 bg-black opacity-50"></div>
       <div className="modal-container z-50 mx-auto h-auto w-full min-w-[522px] max-w-[700px] rounded-md bg-white shadow-lg">
@@ -29,6 +31,7 @@ const Modal = ({
             onClick={onClose}
             type="button"
             className="absolute right-2 p-2"
+            data-testid="close-button"
           >
             <MdClose size={24} />
           </button>

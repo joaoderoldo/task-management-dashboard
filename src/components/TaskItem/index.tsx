@@ -43,7 +43,11 @@ const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
             TASK_STATUS_VARIANTS[task.status],
           )}
         >
-          <button className="px-2" onClick={() => setIsUpdating(true)}>
+          <button
+            className="px-2"
+            onClick={() => setIsUpdating(true)}
+            data-testid="update-status-button"
+          >
             {TASK_STATUS[task.status]}
           </button>
           {task.status !== 'completed' && (
@@ -60,24 +64,32 @@ const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
           <button
             className="transition-colors hover:text-orange-400"
             onClick={handleSetSelectedTask}
+            data-testid="edit-task-button"
           >
             <FaPencilAlt />
           </button>
           <button
             className="transition-colors hover:text-red-400"
             onClick={() => setIsDeleting(true)}
+            data-testid="delete-task-button"
           >
             <FaRegTrashAlt />
           </button>
         </div>
       </div>
-      <h3 className="hover:filter-trash-red mt-4 break-words text-lg font-semibold text-gray-800">
+      <h3
+        className="hover:filter-trash-red mt-4 break-words text-lg font-semibold text-gray-800"
+        data-testid="task-title"
+      >
         {task.title}
       </h3>
-      <p className="mt-2 break-words text-xs text-gray-500">
+      <p
+        className="mt-2 break-words text-xs text-gray-500"
+        data-testid="task-description"
+      >
         {task.description}
       </p>
-      <CardModal isOpen={isDeleting}>
+      <CardModal isOpen={isDeleting} dataTestId="delete-task-modal">
         <span className="block text-center text-lg font-bold">
           Are you sure?
         </span>
@@ -99,7 +111,7 @@ const TaskItem = ({ task, setSelectedTask }: TaskItemProps) => {
           </button>
         </div>
       </CardModal>
-      <CardModal isOpen={isUpdating}>
+      <CardModal isOpen={isUpdating} dataTestId="update-status-modal">
         <span className="block text-center text-lg font-bold">
           Update Task Status
         </span>

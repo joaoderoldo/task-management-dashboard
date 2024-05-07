@@ -118,6 +118,7 @@ const FilterBar = ({
           <button
             className="flex w-full items-center justify-between rounded bg-[#F7F7F7] p-2 px-4 ring-1 ring-secondary"
             onClick={() => setStatusFilterOpen(prevState => !prevState)}
+            data-testid="status-filter"
           >
             <span
               className={twMerge(statusFilter === 'all' && 'text-gray-400')}
