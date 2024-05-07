@@ -22,7 +22,7 @@ const Modal = ({
       data-testid="modal"
     >
       <div className="modal-overlay fixed inset-0 bg-black opacity-50"></div>
-      <div className="modal-container z-50 mx-auto h-auto w-full min-w-[522px] max-w-[700px] rounded-md bg-white shadow-lg">
+      <div className="modal-container z-50 mx-4 h-auto w-full max-w-[700px] rounded-md bg-white shadow-lg md:mx-auto md:min-w-[522px]">
         <div className="relative flex items-center justify-center rounded-tl-md rounded-tr-md bg-[#ECEFF1] p-4">
           <span className="font-opensans text-base font-bold text-[#425A72]">
             {title}
